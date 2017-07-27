@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+1、jQuery基础
+(1)简介
+jQuery是一个js框架，最大的特点是，利用
+选择器查找要操作的节点，并且将找到的节点
+封装成一个jQuery对象，这样封装的好处有两个：
+一个是可兼容不同的浏览器，另外，代码也会更简洁。
+(2)编程步骤
+step1,利用选择器(jQuery借鉴了css选择器的
+语法)查找到要操作的dom节点(这些节点会被
+封装成一个jQuery对象)。
+step2,调用jQuery对象的属性或者方法。
+(3)jQuery对象与dom对象的转换。
+1)dom对象 ---> jQuery对象
+$(dom对象);如：$('#di')
+2)jQuery对象  ---> dom对象
+方式一     $obj.get(0);如var obj=document.getElementById('d1') var $obj=$(obj);
+方式二       $obj.get()[0];如：var $obj=$("d1"); var obj=$obj.get(0) 或 var obj=$obj.get()[0];
+
+2、选择器
+1)基本选择器
+#id 如：$('#d1')
+.class 如:$('.s1')
+element 如：$('div')
+select1,select2..selectn 如：$('#d1,p,.s1')
+* 如：$('*')所有
+2)层次选择器
+select1 select2 查找所有的后代 如：$('#d1 div')找到d1的所有div(包括孙子节点)
+select1>select2 只查找子节点(不包括孙子节点，单纯的直接子节点)
+select1+select2 下一个兄0弟 如（'#d2+div'）
+select1~select2 下面所有的兄弟 eg;$(#d2~div)
+3)过滤选择器
+(1)基本过滤选择器
+:first 找到第一个元素 eg;$('#t1 tr:first');找到id为t1的表的第一行
+:last  $('#t1 tr:first') 找到id为t1的表的最后行
+:not(selector) eg；$('tbody tr:not(#tr2)') 找到出了行id为tr2的所有行
+:even 偶数行 eg：$('tbody tr:even')：找到表中行号为偶数的行
+:odd  奇数行 eg：$('tbody tr:odd')：找到表中行号为奇数的行
+:eq(index) 行号为index的行： eg $('tbody tr:eq(1) td:eq(1)')找到tbody的第一行第一列
+:gt(index) eg；$('#t1 tr:gt(1)') 找到行好大于1的所有行
+:lt(index)eg；$('#t1 tr:lt(1)') 找到行好大于1的所有行
+(2)内容过滤选择器
+:contains(text) 匹配包含给定文本的元素 eg:$('div:contains(吃饭)')；
+:empty 匹配所有不包含子元素或者文本的空元素 eg：$('div:empty').html('一会儿就吃了');知道到div标签体为空的标
+
+签给标签体加上内容
+:has(selector) 匹配含有选择器所匹配的元素的元素 eg;$('div:has(span)')；
+:parent 匹配含有子元素或者文本的元素
+
+$('div:parent')：选择了第一个和第三个标签，二第二个则没被选中 ，因为其内容为空
+(3)可见性过滤选择器
+:hidden 匹配所有不可见元素，或者type为hidden的元素 eg：$('div:hidden').show('slow');
+或$('div:hidden').css('display','block');
+:visible 匹配所有的可见元素 eg:$('div:visible').hide('slow');
+(4)属性过滤选择器
+[attribute] eg:$('div[id=d1]')选择id为d1的div
+[attribute=value] 属性值为value的元素
+[attribute!=value] 属性值不为value的元素
+(5)子元素过滤选择器
+:index:下标从1开始！！！eg:$('ul li:eq(1)')找到ul的第二个子元素
+:nth-child(index/even/odd) 选择器匹配属于其父元素的第 N 个子元素，不论元素的类型。
+n 可以是数字、关键词或公式。
+(6)表单对象属性过滤选择器 selector /s8.html
+:enabled eg;$('#form1 input:enabled').attr('disabled',true);
+:disabled eg:$('#form1 input:disabled').attr('disabled',false);
+:checked eg:$('#form2 input:checked').val()
+:selected eg:$('#form3 option:selected').val()
+4)表单选择器(这个简单，一看就会)
+:input
+:text
+:pasword
+:radio
+:checkbox
+:submit
+:image
+:reset
+:button
+:file
+:hidden
+
+3、dom操作
+1)查询
+利用选择器找到节点之后，可以获取节点的html
+内容、文本内容、属性值、value值。
+a, html()   innerHTML,包含了节点之间的所有内容
+b, text()   innerText,只有文本
+c, attr()     访问某个属性
+d, val()     value属性值
+以上四个方法，也可以修改。
+2)创建
+$(html);
+3)插入节点
+append():作为最后一个孩子追加进来。
+prepend():作为第一个孩子追加进来。
+after():作为下一个兄弟添加进来。
+before():作为上一个兄弟添加进来。
+4)删除节点
+remove()
+remove(selector)
+empty():清空节点
+5)数据与行为分离
+将javascript代码写到.js文件里面，然后html文件引入
+相应的js文件就可以了。这样，方便代码的维护。
+$(fn);
+fn是一个函数，我们经常使用匿名函数，比如
+$(function(){
+//当整个页面加载完毕，会执行这儿的代码。
+});
+6)复制节点
+clone()
+clone(true):使复制的节点也具有行为(将事件
+处理代码一块复制)
+7)属性操作
+读取：attr('');
+设置：    attr('','') 或者一次
+设置多个 attr({"class":"s1","style":"color:red;"});
+删除：removeAttr('')
+8)样式操作
+获取和设置: attr("class","")    或者 attr("style","");
+追加:addClass('')
+移除:removeClass('')
+或者removeClass('s1 s2')
+或者removeClass()//会删除所有样式
+是否有某个样式 hasClass('')
+切换样式：toggleClass,有该样式，就删除，没有，
+就添加。
+读取css('')
+设置css('','')或者
+css({'':'','':''})//设置多个样式
+9)遍历节点
+children()/children(selector):只考虑子元素，
+不考虑其它后代元素。
+next()/next(selector):下一个兄弟
+prev()/prev(selector):上一个兄弟
+siblings()/siblings(selector):其它兄弟
+find(selector):查找所有的后代
+parent():父节点
+
+</body>
+</html>
