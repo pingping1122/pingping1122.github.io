@@ -64,6 +64,6 @@ bundle exec jekyll serve
 
 起来之后，打开浏览器，访问http://localhost:4000 ,可以在看到该篇文章即可；
 
-【4】ok之后，将你的文章push到github上即可。
+【4】ok之后，将你的_posts文件直接替换项目下的_posts文件，并push到github上即可。
 
 【5】push完之后，看就可以在 http://你在github上的用户名.github.io  上看到与本地一样的内容了；
