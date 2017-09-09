@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "利用Jekyll和Github搭建免费的个人blog"
 date:   2017-08-08 16:01:20 +0800
 categories: jekyll update
