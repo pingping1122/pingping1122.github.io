@@ -1,15 +1,18 @@
 ---
 layout: post
-title:  "Angularjs实现多选按钮"
+title:  "Angularjs+Bootstrp实现多选按钮"
 date:   2017-09-09 09:43:20 +0800
 categories: jekyll update
 ---
 
 ## 利用Angularjs实现多选按钮 ---布局使用bootstrap
 
-### html页面代码
-![html部分代码](https://raw.githubusercontent.com/pingping1122/pingping1122.github.io/master/images/angular_achieve_checkbox/html_code.png)
+### 执行效果类似：
+![效果图](https://raw.githubusercontent.com/pingping1122/pingping1122.github.io/master/images/angular_achieve_checkbox/result.png)
 
+
+### html页面代码
+ ![html部分代码](https://raw.githubusercontent.com/pingping1122/pingping1122.github.io/master/images/angular_achieve_checkbox/html_code.png) 
 
 ### js代码
 
@@ -45,4 +48,3 @@ $scope.choseRole=function(reason){
 }
 
 
-![效果图](https://raw.githubusercontent.com/pingping1122/pingping1122.github.io/master/images/angular_achieve_checkbox/result.png)
