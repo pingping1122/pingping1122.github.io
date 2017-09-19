@@ -11,9 +11,7 @@ categories: jekyll update
 #####  效果如下：
 ![效果图](https://raw.githubusercontent.com/pingping1122/pingping1122.github.io/master/images/angular_achieve_checkbox/result.png)
 
-
-### 【3】js实现从url下载文件到本地
-![【3】js实现从url下载文件到本地](https://raw.githubusercontent.com/pingping1122/pingping1122.github.io/master/images/js_download_file_form_url/js_download_file_form_url.png)
+[【3】js实现从url下载文件到本地](https://github.com/pingping1122/pingping1122.github.io/blob/master/_posts/2017-09-19-js-download-file-form-url.markdown)
 
 
 
