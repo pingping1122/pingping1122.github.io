@@ -4,6 +4,8 @@ title:  "html通过js强制下载mp4文件(download)"
 date:   2017-10-26 09:43:20 +0800
 categories: jekyll update
 ---
+本文参考至：
+[Mp4 Download causes browser to play file instead of download](https://stackoverflow.com/questions/21091766/mp4-download-causes-browser-to-play-file-instead-of-download)
 
 ## 【H5-download】
 #### HTML5的download属性用来强制浏览器下载对应文件，而非打开。
