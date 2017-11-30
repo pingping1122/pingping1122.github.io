@@ -285,9 +285,27 @@ categories: jekyll update
 
 #### [2]判断设备宽高
 
-     /* 设备宽度大于 320px 小于 640px */
+     /* 设备宽度大于 320px 小于 640px-all 所有设备 */
      @media all and (min-width:320px) and (max-width:640px) {
      }
+
+
+     // screen 显示器类
+    @media screen and (min-width: 1200px) {
+        css-code;
+    }
+    @media screen and(min-width: 960px) and (max-width: 1199px) {
+        css-code;
+    }
+    @media screen and(min-width: 768px) and (max-width: 959px) {
+        css-code;
+    }
+    @media screen and(min-width: 480px) and (max-width: 767px) {
+        css-code;
+    }
+    @media screen and (max-width: 479px) {
+        css-code;
+    }
 
 #### [3]判断设备像素比
 
