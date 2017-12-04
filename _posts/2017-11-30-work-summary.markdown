@@ -64,6 +64,7 @@ categories: jekyll update
 
 ![不清除浮动情况下，保持正常文件流](https://raw.githubusercontent.com/pingping1122/pingping1122.github.io/master/images/work_web_summary/不清除浮动情况下，保持正常文件流.png)
 
+
 ###　项目相关：
 
 * 【1】跨域请求 xhrFields:{withCredentials:true;}
