@@ -9,9 +9,63 @@ categories: jekyll update
 
 ## 【20171127-20171201】
 
+### 一、项目相关
+
+* 【1】Ajax+Promise 异步请求--直调后台(go语言)接口
+
+具体代码如下：--需要先导入$q依赖;
+
+     function getDataLIst(params){
+        var deferred=$q.defer();
+        var promise=deferred.promise;
+        $.ajax({
+            url:'api/project/sale',
+            data:JSON.stringfy({
+                cmd:'getList',
+                request_id:12345,
+                session_key:globalService.getSession();
+                body:params
+                }),
+            contentType:'application/json,charset=utf-8',
+            dataType:'json',
+            type:'post',
+            success:function(data){
+                 deferred.resolve(data);},
+            erro:function(){
+                deferred.reject();}
+            });
+         return promise;
+     }
+
+* 【2】图片标签 
+  
+图片标签仅仅是img
+
+       <img  src="" />
+
+* 【3】分支代码书写时，尽量不要在分支中return---改为多分支实现；如果一个分支为空，则留一个空行；
+
+### 二、响应式设计
+
+* 【1】允许网页宽度自动调整----加viewport元标签
+   
+具体代码如下：
+
+     <meta name="viewport" content="width=device-width,initial-scale=1" >
+
+* 【2】设置*{box-sizing:border-box}
+     *border和padding值均包含在width中；margin另算；
+* 【3】不能使用绝对宽度+使用相对字体大小；
+* 【4】滚动布局float,如果宽度不够，后面元素会自动滚动到前面元素下方，不会再水平方向溢出；
+* 【5】使用css的@media规则(min-width);
+* 【6】图片使用自适应：img{max-width:100%}
+* 【7】.flow-opposite,实现其在移动端优先显示，且在大屏幕中右侧显示的列；
+* 【8】创建一个容器包含页面上所有标签，并用于控制页面的最大宽度；
+* 【9】列包含在行中，在大屏幕中用float:left将列水平排列，然后运用padding设置相邻两列之间的间隙，请忘掉margin；
+
 ## 【20171120-20171124】
 
-### CSS相关
+### 一、CSS相关
 * 【1】flex布局，
    *  若父子布局均为flex，则同一方向上的布局继承至父布局；eg.flex-direction;
    *  设置为flex布局后，其子元素的float、clear、vertical-align失效；
@@ -65,7 +119,7 @@ categories: jekyll update
 ![不清除浮动情况下，保持正常文件流](https://raw.githubusercontent.com/pingping1122/pingping1122.github.io/master/images/work_web_summary/不清除浮动情况下，保持正常文件流.png)
 
 
-###　项目相关：
+### 二、项目相关：
 
 * 【1】跨域请求 xhrFields:{withCredentials:true;}
 * 【2】文件MD5生成插件：【browser-md5-file】     [spark-md5---生成的MD5不正确]
