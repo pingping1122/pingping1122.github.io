@@ -51,7 +51,8 @@ categories: jekyll update
           grid-template-rows: 100px 100px 100px;
         }
     .item1 {
-         grid-column: 1/3;
+         grid-column: 1/3; // 等同于grid-column-start:1; grid-column-end:3;
+         从第一条分割线到第三条分割线，相当于占了2列；
         }
     .item3 {
         grid-row-start: 2;
