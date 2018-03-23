@@ -1,0 +1,73 @@
+---
+layout: post
+title:  "前端笔记摘录--001"
+date:   2018-03-16 09:20:20 +0800
+categories: jekyll update
+---
+
+### 一、常用小点
+* #### $pristine --表单没有填写记录；
+* #### 访问对象属性
+   * ##### person['name']
+   * ##### person.name
+* #### for in 遍历对象---会遍历原型链上所有属性；---hasOwnProperty()检测；
+* #### javascript运算符优先级(!>&&)
+* #### 浏览器一般不会让字体小于12px,若设置小于12px，浏览器都会默认显示为12px；
+* #### webAssembly--是一个针对其他语言的编译器，允许机会任何语言运行于浏览器；
+* #### 图片裁剪以适应大小---object-fit:cover;
+* #### user-select:none;--该区域内容无法被选中，可以阻止用户长按复制；
+* #### 边框颜色越淡，就会看起来更细；
+* #### 统一代码风格工具：editconfig
+* #### 浏览器最大并发请求数目前为10个；
+* #### 设置textarea只是纵向拉伸，resize:vertical;
+* #### js中switch case 中匹配的是全等模式（===）；
+* #### a标签中href默认自带下划线，去掉下划线（text-decoration:none;）;
+* #### 表格的边框合并为单一边框（table{border-collapse:collapse;}）；
+* #### 创建.bowerrc 直接创建该文件会出错，---命令行null>.bowerrc回车即可创建成功；
+* #### emmet前端开发神器--使用缩写语法快速编写html、css及实现其他功能；---tab实现；
+* #### NaN！==NaN 判断一个变量是否为NaN--如果一个变量不等于它自己，这个变量一定是NaN；
+* #### angularjs中$http.get().success is not a function 错误---是因为新版本中then和catch代替了success和error；
+* #### button type属性submit（IE之外的bowser默认），button（IE默认）
+
+ng-submit 
+     
+     <form ng-submit="submitForm()">
+     <input type="text">-----回车可提交form
+     <input type="submit/button">
+     <button></button>------回车也可提交，因为此处button的默认类型是submit，而若将其类型改为button，回车则无响应；
+     </form>
+
+
+
+
+### 前端性能
+* #### html
+    * ##### 避免内嵌式/嵌入式代码--不要在代码中手工编写css/js（引入外部文件可以让浏览器缓存它）；
+    * ##### 样式文件放在head中（让浏览器尽快知道标签样式），js文件放在页面结尾body最后（执行程序会阻塞页面的渲染）；
+* #### css
+    * ##### 压缩样式表；
+    * ##### 合并多个css文件；
+    * ##### 使用link标签而非@inport；
+* #### js
+    * ##### 嵌入式视频或大文件，异步嵌入，不阻塞页面加载；
+    * ##### 优化循环---存储数组长度，而不是每次循环都重新计算；
+    * ##### 最小化重绘（布局不变，外观发生改变）和回流（布局改变）--当有任何属性或元素发生变化时；
+    * ##### 遍历DOM代价很高应减少；
+    * ##### 压缩js文件并合并；l
+* #### iamge
+    * ##### css sprits;
+    * ##### data uri 使用图片的数据（base64）代替使用图片uri;
+    * ##### 要在img标签中设置width和height，可防止重绘和回流，不要在img中调整图像；
+
+### 前后端交互--ajax、websocket；
+* #### ajax-核心xhr，请求-->响应，传统的表单交互需求几乎都可以有ajax改造为元地提交并得到反馈的交互方式，不需要跳转页面；
+* websocket（实时性要求比较高的场景）--工作发那个是是前后端建立一个持续的连接，信息可随时由前端发向后端，或由后端推向前端---->建立实时对话的应用；
+
+### 响应式布局---一个网站能够兼容多个终端---解决移动互联网浏览问题；
+
+
+
+
+
+
+
