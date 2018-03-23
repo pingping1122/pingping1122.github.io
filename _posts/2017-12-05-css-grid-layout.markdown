@@ -7,17 +7,17 @@ categories: jekyll update
 
 ### CSS Grid布局：
 
-* 【1】使chrome支持调试grid layout
-  * 则在chrome地址栏输入:
+* #### 【1】使chrome支持调试grid layout
+  * ##### 则在chrome地址栏输入:
     chrome://flags#enable-experimental-web-platform-features
-  * 回车---点击enable---再重启chrome即可；
-* 【2】css_grid主要由两部分组成
-  * wrapper父元素--实际的grid网格；
-  * items子元素--grid网格的内容；
-  * .wrapper{
+  * ##### 回车---点击enable---再重启chrome即可；
+* #### 【2】css_grid主要由两部分组成
+  * ##### wrapper父元素--实际的grid网格；
+  * ##### items子元素--grid网格的内容；
+  * ##### .wrapper{
             display:grid;
             }
-* 【3】行和列 grid-template-columns、 grid-template-rows
+* #### 【3】行和列 grid-template-columns、 grid-template-rows
 
 例如--实现2行3列：
 
@@ -40,8 +40,8 @@ categories: jekyll update
 
 ![简单grid网格](https://raw.githubusercontent.com/pingping1122/pingping1122.github.io/master/images/css_grid_layout/grid_layout.png);
 
-* 【4】设置items子元素--定位和调整items子元素的大小；grid-column和grid-row
-   * 【网格线划分，而不是网格】
+* #### 【4】设置items子元素--定位和调整items子元素的大小；grid-column和grid-row
+   * ##### 【网格线划分，而不是网格】
 
 具体实现
 
@@ -74,7 +74,7 @@ categories: jekyll update
 
 ![grid_items调整单项](https://raw.githubusercontent.com/pingping1122/pingping1122.github.io/master/images/css_grid_layout/grid_items.png);
 
-* 【5】圣杯布局+自适应布局实现
+* #### 【5】圣杯布局+自适应布局实现
 
 具体代码如下：
 

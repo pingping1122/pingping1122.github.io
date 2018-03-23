@@ -1,0 +1,227 @@
+---
+layout: post
+title:  "前端笔记摘录--002"
+date:   2018-03-23 09:20:20 +0800
+categories: jekyll update
+---
+
+### 一、立即执行函数表达式IIFE---(immediately-involked function expression)
+
+代码示例如下：
+
+     (function(){
+        var a=b=5;
+     })();
+     console.log(b); // 5 因为a使用关键字var定义，故其为局部变量，但b为全局变量；
+
+     (function(){
+        'use strict'
+        var a=b=5;------>更改为var a=window.b=5;// 则正常
+     })();
+     console.log(b); //若使用严格模式'use strict';会报错uncaught referenceError:b is not defined;
+
+
+### 二、创建原生Naive方法
+
+* #### 扩展原生数据类型；
+
+例如创建一个str.repeatStr()函数；满足console.log('s'.repeatStr(5));// sssss
+
+     String.prototype.repeatStr=String.prototype.repeatStr||function(times){
+        // String.prototype.repeatStr避免重写已定义的方法；
+        var str='';
+        for(var i=0;i<times;i++){
+            str+=this;
+        }
+        return str;
+     }
+
+### 三、this如何工作----所引用的是函数上下文，取决于函数是如何调用的，而不是被定义的；
+代码示例：
+
+     var fullname='AAA';
+     var obj={
+        fullname:'BBB';
+        prop:{
+              fullname:"CCC"
+              getFullname:function(){
+                  return this.fullname;
+               }
+        }
+     }
+     console.log(obj.prop.getFullname()); // CCC  ---getFullname作为obj.prop对象的函数被调用,this指obj.prop;
+     var test=obj.prop.getFullname();
+     console.log(test()); // AAA; ---- 当前上下文是window；
+
+     如何让最后一个console打印出CCC;
+     call()、apply()----强制转换上下文环境；
+     console.log(test.call(ovj.prop)); // CCC
+
+call/apply都能继承另一个对象的方法和属性；
+
+     Function.apply(obj,args);
+        obj--这个对象将替代Function类型里的this对象；
+        args--数组，将作为参数传递给Function(args-->arguments)
+     Function.call(obj,arg1,arg2...);
+     区别仅有一个：
+     apply第二个参数是参数数组、call是参数列表
+
+### 四、isPrime判断；
+写一个判断是否为质数的判断函数，是质数返回true，否则返回false；
+
+     Function isPrime(number){
+        if(typeOf number!=='number'||!Number.isInteger(number)){
+            // 输入检查
+            return false;
+        }
+        if(number<2){ // 负数不是质数
+            return false;
+        }
+        if(number===2){
+            return true;
+        }else if(number%2===0){
+            return false; // 大于2的能被整出的偶数都不是质数
+        }
+        var squartRoot=Math.sqrt(number);
+        for(var i=3;i<squartRoot;i+=2){
+            // i+=2---是因为偶数已被排除；
+            if(number%i===0){
+                return false;
+            }
+        }
+        return true;
+     }
+
+### 五、数组与对象的遍历；
+
+* #### for of 不考虑构造函数的不可枚举属性，至查找可枚举属性；---相比for in 可循环更多东西；
+* #### for in 用来循环带有字符串key的对象的方法；需要进行hasOwnproperty判断；
+
+* #### **for of**  在es6中代替for in---可用于遍历数组、字符串、映射、集合等；
+   * ##### 遍历数组前需要判断数组是否为空；
+   
+示例代码：
+
+      function (var item of array){
+        // statement;
+        // item：每个迭代的属性值被分配到改变量；
+        // array:一个具有可每句属性并可被迭代的对象；
+     }
+
+* #### **for in** ---遍历对象的所有可枚举属性；
+ 
+示例代码：
+
+     for(var t in obj){
+         // t为key---index
+     }
+
+
+### 六、angular-seed学习
+
+* #### 第三方库html-boilerplate--->多浏览器兼容（css reset、IE版本、移动端）
+* meta--- IE8专用的meta标记---用于指定IE8使用哪种模式(IE6/IE7)来渲染浏览器，IE=edge说明什么版本的IE就使用什么版本的模式；
+
+示例代码：
+   
+      <meta http-equiv="X-UA-Compatiable" content="IE='edge'">
+
+* Modernizr:js库，检查浏览器对css3或html5的功能支持情况；
+* Karma是一套前端测试运行环境；
+* Jasmine是js的测试框架；
+    * describe表示一组测试用例的集合；
+    * it表示具体的测试用例；
+    * expect表示期望结果；
+
+### 七、前端小点
+* #### 打印将Object作为Table输出，console.log(object);
+* #### 带promise的异步ajax请求后台数据
+
+示例代码：
+
+     function requestData(param){
+        var deferred=$q.defer();
+        var promise =deferred.promise;
+        $.ajax({
+            url:param.url,
+            data:JSON.stringfy({
+                     cmd:param.cmd,
+                     body:param.body,
+                }),
+            contentType:"application/json;charset=utf-8",
+            dataType:"json",
+            success:function(result){
+                promise.resolve(result);
+            },
+            error:function(){
+                promise.reject();
+            }
+           });
+        return promise;
+     }
+
+* #### QRCode.js---用于生成二维码；
+
+示例代码：
+
+     html:
+     <script src="qrcode.js">
+        <div id=qrcodeId></div>
+     </script>
+
+     js:
+     var q=new QRCode('qrcodeId');
+     q.clear(); 
+     q.makeCode('ccccccc'); // cccccc为二维码内容；
+
+* #### html中【中文乱码】问题
+    * ##### 浏览器上设置编码方式UTF-8;
+    * ##### 在html的最前边加编码设置； 
+
+方式二代码
+
+     <html>
+     <meta charset="utf-8">
+     </html>
+
+* #### span之间有空格写法：
+
+示例代码：
+
+     <span>第一行</span>
+     <span>第二行</span>   -----两个span之间回车即可实现
+
+* #### background-attachment:设置背景图像是否会随着页面其余部分滚动而滚动；
+* #### 浏览器内核
+
+ chrome | IE | firefox | safari  | opera 
+-webkit-|-ms-| -moz-   | -webkit-|-webkit-
+
+* #### 时间过滤器
+
+示例代码：
+
+     dataValue|date:"yyyy/MM/dd HH:mm:ss"
+
+* #### github如何在本地创建仓库，并推动至github服务器；
+
+示例代码：
+
+      【1】文件夹下：git init
+      【2】增加文件:git status  ---查看增删文件情况
+      【3】确定添加哪些文件：git add "-A"  ---A代表全部提交
+      【4】提交文件到本地仓库：git commit -m '提交说明'
+      【5】在github创建仓库
+      【6】本地仓库与远程建立联系： git remote add origin gitName/仓库名.git
+      【7】推动至远程仓库：git push -u origin master
+
+* #### css判断屏幕大小
+
+示例代码：
+
+     @media screen and (min-width:480px) and (max-width:799px){
+        // css code
+     }
+
+
+
