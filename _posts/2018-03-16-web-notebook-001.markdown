@@ -65,9 +65,53 @@ ng-submit
 
 ### 响应式布局---一个网站能够兼容多个终端---解决移动互联网浏览问题；
 
+### 常见js报错
 
+#### [1]Mutable Variable is accessible from closure [duplicate]
+---在循环中使用异步调用，在回调函数中使用循环数据就会出现这个问题，因为异步循环等到回调回来时可能外部循环改变了。
 
+代码：
+     
+     for (var t = 0; t < item.custm_param.length; t++) {        
+                    if ( item.custm_param[t].type === 2) {
+                            var te=t;
+                            params.body.download_url =  item.custm_param[t].value;
+                            dappcustmService.getDappcustmData(params).then(function (result) {
+                                // 这里的te会报错
+                                item.custm_param[te].sign_value
+                                    =result.body.signed_download_url;
+                            });
+                    }
+                }
+　　　　
 
+改进方案一：
 
+      for (var t = 0; t < item.custm_param.length; t++) {        
+                    if ( item.custm_param[t].type === 2) {
+                        (function(){ // 这样ok
+                            var te=t;  
+                            params.body.download_url =  item.custm_param[t].value;
+                            dappcustmService.getDappcustmData(params).then(function (result) {
+                                // 这里的te---ok
+                                item.custm_param[te].sign_value
+                                    =result.body.signed_download_url;
+                            });
+                        })();
+                    }
+                }
+　　　
 
+改进方案二：
 
+     for (var t = 0; t < item.custm_param.length; t++) {        
+                    if ( item.custm_param[t].type === 2) {
+                            var te=t;  ---->const te=t; // 这样也ok
+                            params.body.download_url =  item.custm_param[t].value;
+                            dappcustmService.getDappcustmData(params).then(function (result) {
+                                // 这里的te---ok
+                                item.custm_param[te].sign_value
+                                    =result.body.signed_download_url;
+                            });
+                    }
+                }
