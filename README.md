@@ -1,1 +1,1 @@
-just for test git commit 
+Github+jekyll搭建的静态blog
