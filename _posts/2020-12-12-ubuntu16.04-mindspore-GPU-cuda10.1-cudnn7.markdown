@@ -1,0 +1,157 @@
+---
+layout: post
+title:  "【MindSpore】Ubuntu16.04上成功安装GPU版MindSpore1.0.1"
+date:   2020-12-12 11:20:08 +0800
+categories: jekyll update
+---
+
+
+
+
+本文是在宿主机Ubuntu16.04上拉取cuda10.1-cudnn7-ubuntu18.04的镜像，在容器中通过Miniconda3创建python3.7.5的环境并成功安装mindspore_gpu_1.0.1；
+
+
+ **一、前期踩过的坑**
+ 
+ **二、安装成功的流程**
+ 
+ *【1】拉取cuda10.1-cudnn7-ubuntu18.04的镜像
+
+ *【2】镜像内创建容器**此处一定是nvidia-docker创建**
+
+ *【3】在容器内安装Miniconda
+
+ *【4】使用conda创建python3.7.5的虚拟环境并激活
+ 
+ *【5】通过可执行文件安装mindspore_gpu_1.0.1.whl并测试
+
+
+**一、前期踩过的坑**
+
+[在ubuntu上安装GPU版本mindspore的具体流程：](https://www.mindspore.cn/install/)
+
+![ubuntu上安装GPU版mindspore的详细要求](https://raw.githubusercontent.com/pingping1122/pingping1122.github.io/master/images/ubuntu16.04_mindspore_gpu_cuda10.1/mindsporeGPU.png)
+
+主要有以下几点：
+
+ 1. Ubuntu18.04（系统版本至少为18.04及以上） ：
+基于我使用的是共用版Ubuntu16.04的服务器，无法直接升级，只能通过容器方式，拉取Ubuntu18.04的镜像；
+ 2. cuda10.1  （cuda版本必须为10.1）：
+ 3. cudnn >= 7.6  （cudnn7.6.5可行，但cudnn8是会报错的）：
+因Nvidia提供了[cuda+cudnn+ubuntu的镜像](https://hub.docker.com/r/nvidia/cuda)，
+所以可以一次性拉取需要的cuda10.1-cudnn7-ubuntu18.04的镜像;
+因要求的是cudnn>=7.6，所以最开始拉取的是cudnn8版本的，一直报错 `libcudnn.so.7: cannot open shared object file: No such file or directory` ，后改为cudnn7版本就没报错了；
+
+ 4. devel和runtime版本区别：**本文选择devel版**
+
+![cuda有devel与runtime](https://raw.githubusercontent.com/pingping1122/pingping1122.github.io/master/images/ubuntu16.04_mindspore_gpu_cuda10.1/cuda10.1-cudnn7.png)
+
+找到cuda10.1-cudnn7-ubuntu18.04，（cudnn7它标明的是cudnn7.6.5）发现有两个版本cuda devel和cuda runtime：
+
+![cuda devel与runtime区别](https://raw.githubusercontent.com/pingping1122/pingping1122.github.io/master/images/ubuntu16.04_mindspore_gpu_cuda10.1/devel_runtime.png)
+
+官方解释：
+devel是说只涵盖了开发bai所需的所有工具，包含编译、debug等，以及编译需要的头文件、静态库。
+runtime是说只涵盖了运行环境的最小集合，例如动态库等
+所以runtime的镜像大小会比devel小一些
+
+ 5. docker与nvidia-docker的区别：
+
+![nvidia-docker](https://raw.githubusercontent.com/pingping1122/pingping1122.github.io/master/images/ubuntu16.04_mindspore_gpu_cuda10.1/nvidia-docker.png)
+
+docker创建的容器里需要再次安装nvidia-driver，且需要容器里的nvidia-driver版本与宿主机里的nvidia-driver版本一致，才能在容器里使用GPU；
+
+nvidia-docker创建的容器，只需要在宿主机上安装nvidia-driver，容器内就可以直接使用GPU；
+
+**安装nvidia-docker之前必须在宿主机上安装nvidia-driver和docker；**
+
+```cpp
+nvidia-smi                     # 检查宿主机是否安装了 nvidia-driver
+docker version              # 检查宿主机上安装的docker版本
+nvidia-docker version   # 检查宿主机上安装的nvidia-docker版本
+```
+
+![检查宿主机安装了显卡驱动](https://raw.githubusercontent.com/pingping1122/pingping1122.github.io/master/images/ubuntu16.04_mindspore_gpu_cuda10.1/nvidia-smi.png)
+
+![查看宿主机上docker版本](https://raw.githubusercontent.com/pingping1122/pingping1122.github.io/master/images/ubuntu16.04_mindspore_gpu_cuda10.1/docker-version.png)
+
+![查看宿主机上nvidia-docker版本](https://raw.githubusercontent.com/pingping1122/pingping1122.github.io/master/images/ubuntu16.04_mindspore_gpu_cuda10.1/nvidia-docker-version.png)
+
+**二、 安装成功的流程**
+
+ 【1】拉取nvidia/cuda:10.1-cudnn8-devel-ubuntu18.04的镜像
+ 
+**为避免不必要的错误，后续使用的全部都是nvidia-docker**
+
+选择**devel**版本
+
+```cpp
+nvidia-docker pull nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04  
+```
+![拉取cudnn7的镜像](https://raw.githubusercontent.com/pingping1122/pingping1122.github.io/master/images/ubuntu16.04_mindspore_gpu_cuda10.1/cudnn7-image.png)
+
+【2】镜像内创建容器**此处一定是nvidia-docker创建**
+ 
+```cpp
+nvidia-docker run -it nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04 /bin/bash
+```
+![nvidia-docker创建容器](https://raw.githubusercontent.com/pingping1122/pingping1122.github.io/master/images/ubuntu16.04_mindspore_gpu_cuda10.1/create-container.png)
+
+ 【3】在容器内安装Miniconda
+ 
+**因为在容器内使用wget下载miniconda一直失败，所以选择在windows上下载并上传至ubuntu宿主机上，再从ubuntu宿主机上拷贝至容器内；**
+
+```cpp
+
+nvidia-docker  cp  miniconda3.sh路径   containerID:/     #  退出容器，并将miniconda3.sh 文件拷贝至容器根目录下
+
+nvidia-docker  start containerID                         # 启动容器并进入
+nvidia-docker exec -it containerID  /bin/bash
+
+bash  Miniconda3-latest-Linux-x86_64.sh                  # 安装miniconda3
+```
+![安装miniconda3](https://raw.githubusercontent.com/pingping1122/pingping1122.github.io/master/images/ubuntu16.04_mindspore_gpu_cuda10.1/install-conda.png)
+
+【4】使用conda创建python3.7.5的虚拟环境并激活
+**安装miniconda后需先退出容器再进入，才能再容器中使用conda**
+
+```cpp
+conda create -n mindspore1.0.1 python=3.7.5   # conda create -n  虚拟环境名  指定python版本
+```
+
+![conda创建虚拟环境](https://raw.githubusercontent.com/pingping1122/pingping1122.github.io/master/images/ubuntu16.04_mindspore_gpu_cuda10.1/conda-create-python3.7.5-mindspore.png)
+
+```cpp
+conda activate mindspore1.0.1    # 激活指定环境
+```
+
+windows上下载mindspore_gpu_1.0.1.whl,并拷贝至容器内；
+![激活mindspore1.0.1环境](https://raw.githubusercontent.com/pingping1122/pingping1122.github.io/master/images/ubuntu16.04_mindspore_gpu_cuda10.1/conda-activate-mindspore.png)
+
+ 【5】通过可执行文件安装mindspore_gpu_1.0.1.whl并测试；
+ 
+```cpp
+ pip install mindspore_gpu-1.0.1-cp37-cp37m-linux_x86_64.whl
+```
+
+![容器内安装mindspore-gpu-1.0.1](https://raw.githubusercontent.com/pingping1122/pingping1122.github.io/master/images/ubuntu16.04_mindspore_gpu_cuda10.1/install-mindspore.whl.png)
+
+安装完成后，在python环境下执行以下代码
+
+```cpp
+import numpy as np
+from mindspore import Tensor
+from mindspore.ops import functional as F
+import mindspore.context as context
+
+context.set_context(device_target="GPU")
+x = Tensor(np.ones([1,3,3,4]).astype(np.float32))
+y = Tensor(np.ones([1,3,3,4]).astype(np.float32))
+print(F.tensor_add(x, y))
+```
+
+如果出现以下，则说明安装成功：
+![mindspore-gpu安装成功验证](https://raw.githubusercontent.com/pingping1122/pingping1122.github.io/master/images/ubuntu16.04_mindspore_gpu_cuda10.1/mindspore_ok.png)
+
+
+
